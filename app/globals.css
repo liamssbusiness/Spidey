@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --font-inter: 'Inter', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  background-color: #070710;
+  color: #f0f0f8;
+  font-family: var(--font-inter);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Subtle web pattern background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%231a1a2e' stroke-width='0.4'%3E%3Ccircle cx='60' cy='60' r='55'/%3E%3Ccircle cx='60' cy='60' r='40'/%3E%3Ccircle cx='60' cy='60' r='25'/%3E%3Ccircle cx='60' cy='60' r='10'/%3E%3Cline x1='60' y1='5' x2='60' y2='115'/%3E%3Cline x1='5' y1='60' x2='115' y2='60'/%3E%3Cline x1='21' y1='21' x2='99' y2='99'/%3E%3Cline x1='99' y1='21' x2='21' y2='99'/%3E%3Cline x1='5' y1='38' x2='115' y2='82'/%3E%3Cline x1='5' y1='82' x2='115' y2='38'/%3E%3Cline x1='38' y1='5' x2='82' y2='115'/%3E%3Cline x1='82' y1='5' x2='38' y2='115'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 120px 120px;
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#__next, main {
+  position: relative;
+  z-index: 1;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #0d0d1a;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e1e3a;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #cc0000;
+}
+
+/* Glass card */
+.glass {
+  background: rgba(13, 13, 26, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #1e1e3a;
+}
+
+/* Red glow button */
+.btn-red {
+  background: #cc0000;
+  color: #fff;
+  border: none;
+  transition: all 0.2s ease;
+}
+.btn-red:hover {
+  background: #dd1111;
+  box-shadow: 0 0 18px rgba(204, 0, 0, 0.4);
+}
+
+/* Blue glow button */
+.btn-blue {
+  background: #0044cc;
+  color: #fff;
+  border: none;
+  transition: all 0.2s ease;
+}
+.btn-blue:hover {
+  background: #0055ee;
+  box-shadow: 0 0 18px rgba(0, 68, 204, 0.4);
+}
+
+/* Chat message bubble */
+.msg-spidey {
+  background: #0d0d1a;
+  border: 1px solid #1e1e3a;
+  border-left: 3px solid #cc0000;
+}
+.msg-user {
+  background: #0d1530;
+  border: 1px solid #1e2a50;
+  border-right: 3px solid #0044cc;
+}
+
+/* Typing cursor */
+.typing-cursor::after {
+  content: '▋';
+  animation: blink 0.7s step-end infinite;
+  color: #cc0000;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Glow on focus */
+input:focus, textarea:focus {
+  outline: none;
+  border-color: #cc0000 !important;
+  box-shadow: 0 0 0 2px rgba(204, 0, 0, 0.15);
+}
