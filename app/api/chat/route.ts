@@ -6,7 +6,11 @@ import { listEvents, createEvent } from '@/lib/calendar'
 import { readJson, writeJson, readText, writeText } from '@/lib/storage'
 import { SPIDEY_SYSTEM_PROMPT } from '@/lib/spidey-prompt'
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+function getClient() {
+  const key = process.env.ANTHROPIC_API_KEY
+  if (!key) throw new Error('ANTHROPIC_API_KEY not set')
+  return new Anthropic({ apiKey: key })
+}
 
 type MessageParam = Anthropic.Messages.MessageParam
 
@@ -140,7 +144,7 @@ async function runAgentLoop(messages: MessageParam[], accessToken: string): Prom
   let currentMessages = [...messages]
 
   for (let i = 0; i < 8; i++) {
-    const response = await anthropic.messages.create({
+    const response = await getClient().messages.create({
       model: 'claude-sonnet-4-6',
       max_tokens: 2048,
       system: buildSystemPrompt(),
@@ -263,9 +267,8 @@ async function runAgentLoop(messages: MessageParam[], accessToken: string): Prom
 export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions)
-    if (!session?.accessToken) {
-      return Response.json({ error: 'Not signed in' }, { status: 401 })
-    }
+    // Allow chat even without Google token — tools that need it will gracefully fail
+    const accessToken = session?.accessToken ?? ''
 
     const { messages } = await req.json()
     const apiMessages: MessageParam[] = messages.map((m: { role: string; content: string }) => ({
@@ -273,7 +276,7 @@ export async function POST(req: Request) {
       content: m.content,
     }))
 
-    const result = await runAgentLoop(apiMessages, session.accessToken)
+    const result = await runAgentLoop(apiMessages, accessToken)
 
     const encoder = new TextEncoder()
     const readable = new ReadableStream({

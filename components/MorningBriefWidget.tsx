@@ -1,12 +1,15 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Sunrise, RefreshCw, ExternalLink } from 'lucide-react'
+import { Sunrise, RefreshCw, ArrowLeft, Loader2 } from 'lucide-react'
+import { useInlineAction } from '@/lib/useInlineAction'
 
-export default function MorningBriefWidget({ onAsk }: { onAsk?: (prompt: string) => void }) {
+export default function MorningBriefWidget() {
   const [content, setContent] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [expanded, setExpanded] = useState(false)
+  const [showGenResult, setShowGenResult] = useState(false)
+  const { loading: actionLoading, result, error: actionError, run, clear } = useInlineAction()
 
   const load = async () => {
     setLoading(true)
@@ -23,6 +26,44 @@ export default function MorningBriefWidget({ onAsk }: { onAsk?: (prompt: string)
   const generatePrompt =
     "Generate my morning brief. Check my Gmail inbox for anything important that came in recently, check my calendar for today and tomorrow, then give me a sharp mission-debrief style summary: what's urgent, what's happening today, and what I should prioritise first. Save the brief when you're done."
 
+  const handleGenerate = async () => {
+    setShowGenResult(true)
+    await run(generatePrompt)
+  }
+
+  const handleBack = () => {
+    setShowGenResult(false)
+    clear()
+    load() // Reload in case the brief was saved
+  }
+
+  // ── Generation result view ──
+  if (showGenResult) {
+    return (
+      <div className="glass rounded-xl flex flex-col overflow-hidden h-full">
+        <div className="flex items-center gap-2 px-3 py-2.5 border-b border-border shrink-0">
+          <button onClick={handleBack} className="text-text-dim hover:text-text transition-colors">
+            <ArrowLeft size={13} />
+          </button>
+          <span className="text-xs font-semibold text-text">Generate Brief</span>
+        </div>
+        <div className="flex-1 overflow-y-auto p-3">
+          {actionLoading ? (
+            <div className="flex items-center gap-2 text-text-dim text-xs">
+              <Loader2 size={14} className="animate-spin" />
+              Spidey is generating your brief...
+            </div>
+          ) : actionError ? (
+            <div className="text-xs text-gold">{actionError}</div>
+          ) : (
+            <div className="text-xs text-text leading-relaxed whitespace-pre-wrap">{result}</div>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  // ── Normal view ──
   return (
     <div className="glass rounded-xl flex flex-col overflow-hidden h-full">
       <div className="flex items-center gap-2 px-3 py-2.5 border-b border-border shrink-0">
@@ -55,22 +96,20 @@ export default function MorningBriefWidget({ onAsk }: { onAsk?: (prompt: string)
 
         {!loading && !content && (
           <div className="flex flex-col items-center justify-center h-full gap-3 text-center py-4">
-            <div className="text-3xl">🌅</div>
+            <div className="text-3xl">&#x1f305;</div>
             <div>
               <p className="text-text-muted text-xs font-medium">No brief yet</p>
               <p className="text-text-dim text-[10px] mt-1 leading-relaxed max-w-[200px]">
                 Your CoWork task will drop one here automatically, or generate one now.
               </p>
             </div>
-            {onAsk && (
-              <button
-                onClick={() => onAsk(generatePrompt)}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold hover:bg-amber-500/20 transition-all"
-              >
-                <Sunrise size={12} />
-                Generate Now
-              </button>
-            )}
+            <button
+              onClick={handleGenerate}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold hover:bg-amber-500/20 transition-all"
+            >
+              <Sunrise size={12} />
+              Generate Now
+            </button>
           </div>
         )}
 
@@ -86,14 +125,12 @@ export default function MorningBriefWidget({ onAsk }: { onAsk?: (prompt: string)
 
       {!loading && content && (
         <div className="px-3 py-2 border-t border-border/40 shrink-0 flex items-center justify-between">
-          {onAsk && (
-            <button
-              onClick={() => onAsk(generatePrompt)}
-              className="flex items-center gap-1 text-[10px] text-amber-400 hover:underline"
-            >
-              <RefreshCw size={9} /> Regenerate
-            </button>
-          )}
+          <button
+            onClick={handleGenerate}
+            className="flex items-center gap-1 text-[10px] text-amber-400 hover:underline"
+          >
+            <RefreshCw size={9} /> Regenerate
+          </button>
           <span className="text-[10px] text-text-dim ml-auto">
             CoWork auto-saves here daily
           </span>

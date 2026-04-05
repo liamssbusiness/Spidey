@@ -3,7 +3,7 @@
 import { useSession, signIn } from 'next-auth/react'
 import { useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { LayoutDashboard, Mail, Calendar, Zap, CheckSquare, FileText, Timer, Brain, Sunrise, Globe } from 'lucide-react'
+import { LayoutDashboard, Mail, Calendar, Zap, CheckSquare, FileText, Timer, Brain, Sunrise, Globe, Mic, Lightbulb } from 'lucide-react'
 import TopNav from '@/components/TopNav'
 import ChatPanel from '@/components/ChatPanel'
 import EmailWidget from '@/components/EmailWidget'
@@ -16,6 +16,9 @@ import FocusTimerWidget from '@/components/FocusTimerWidget'
 import SpideyMemoryWidget from '@/components/SpideyMemoryWidget'
 import MorningBriefWidget from '@/components/MorningBriefWidget'
 import CivSimWidget from '@/components/CivSimWidget'
+import VoiceOrb from '@/components/VoiceOrb'
+import IdeaVaultWidget from '@/components/IdeaVaultWidget'
+import TelegramSetupWidget from '@/components/TelegramSetupWidget'
 
 const AUTH_ERRORS: Record<string, string> = {
   OAuthCallback: 'Google sign-in failed. Try again.',
@@ -25,13 +28,14 @@ const AUTH_ERRORS: Record<string, string> = {
   google: 'Google auth error — try signing in again.',
 }
 
-type Tab = 'hub' | 'inbox' | 'calendar' | 'tasks' | 'notes' | 'focus' | 'brief' | 'civ'
+type Tab = 'hub' | 'inbox' | 'calendar' | 'tasks' | 'notes' | 'focus' | 'brief' | 'civ' | 'vault'
 
 const TABS: { id: Tab; label: string; Icon: React.ElementType }[] = [
   { id: 'hub',      label: 'Hub',      Icon: LayoutDashboard },
   { id: 'inbox',    label: 'Inbox',    Icon: Mail },
   { id: 'calendar', label: 'Calendar', Icon: Calendar },
   { id: 'tasks',    label: 'Tasks',    Icon: CheckSquare },
+  { id: 'vault',    label: 'Vault',    Icon: Lightbulb },
   { id: 'notes',    label: 'Notes',    Icon: FileText },
   { id: 'focus',    label: 'Focus',    Icon: Timer },
   { id: 'brief',    label: 'Brief',    Icon: Sunrise },
@@ -45,10 +49,10 @@ function SignInPanel() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-bg-primary">
       <div className="glass rounded-2xl p-12 text-center max-w-md w-full mx-4">
-        <div className="text-6xl mb-6">🕷️</div>
+        <div className="text-6xl mb-6">⚡</div>
         <h1 className="text-3xl font-bold text-text mb-2 tracking-tight">Spidey</h1>
         <p className="text-text-muted text-sm mb-8 leading-relaxed">
-          Your personal AI assistant. Powered by Spider-Man energy.
+          Your personal AI assistant. Powered by luxury intelligence.
         </p>
         {authError && (
           <div className="bg-red-900/40 border border-red-500/50 rounded-lg px-4 py-3 mb-4 text-xs text-red-300 text-left">
@@ -58,7 +62,7 @@ function SignInPanel() {
         )}
         <button
           onClick={() => signIn('google', { callbackUrl: '/' })}
-          className="btn-red w-full py-3 px-6 rounded-xl font-semibold text-sm tracking-wide transition-all duration-200"
+          className="btn-gold w-full py-3 px-6 rounded-xl font-semibold text-sm tracking-wide transition-all duration-200"
         >
           Sign in with Google
         </button>
@@ -75,12 +79,13 @@ export default function Home() {
   const [voiceEnabled, setVoiceEnabled] = useState(false)
   const [chatInput, setChatInput] = useState('')
   const [activeTab, setActiveTab] = useState<Tab>('hub')
+  const [jarvisOpen, setJarvisOpen] = useState(false)
 
   if (status === 'loading') {
     return (
       <div className="flex items-center justify-center min-h-screen bg-bg-primary">
         <div className="text-center">
-          <div className="text-5xl mb-4">🕷️</div>
+          <div className="text-5xl mb-4">⚡</div>
           <p className="text-text-muted text-sm tracking-widest uppercase">Loading...</p>
         </div>
       </div>
@@ -91,7 +96,7 @@ export default function Home() {
     return (
       <Suspense fallback={
         <div className="flex items-center justify-center min-h-screen bg-bg-primary">
-          <div className="text-5xl">🕷️</div>
+          <div className="text-5xl">⚡</div>
         </div>
       }>
         <SignInPanel />
@@ -103,6 +108,9 @@ export default function Home() {
 
   return (
     <div className="flex flex-col h-screen bg-bg-primary overflow-hidden">
+      {/* Luxury scan line overlay */}
+      <div className="scan-line" />
+
       <TopNav
         user={session.user}
         voiceEnabled={voiceEnabled}
@@ -121,7 +129,7 @@ export default function Home() {
                 onClick={() => setActiveTab(id)}
                 className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-medium transition-all border whitespace-nowrap flex-shrink-0 ${
                   activeTab === id
-                    ? 'bg-spidey-red/15 text-spidey-red border-spidey-red/30'
+                    ? 'bg-gold/15 text-gold border-gold/30'
                     : 'text-text-dim hover:text-text hover:bg-bg-surface2 border-transparent'
                 }`}
               >
@@ -135,10 +143,10 @@ export default function Home() {
           {activeTab === 'hub' && (
             <div className="flex-1 overflow-y-auto min-h-0">
               <div className="grid grid-cols-2 gap-3 pb-3" style={{ gridTemplateRows: '300px 260px' }}>
-                <EmailWidget onCompose={(to) => setChatInput(`Draft an email to ${to}: `)} />
-                <CalendarWidget onAddEvent={() => setChatInput('Add a new event: ')} />
+                <EmailWidget />
+                <CalendarWidget />
                 <QuickActionsWidget onAction={setChatInput} />
-                <DailyBriefWidget userName={userName} onAction={setChatInput} />
+                <DailyBriefWidget userName={userName} />
               </div>
             </div>
           )}
@@ -146,14 +154,14 @@ export default function Home() {
           {/* Inbox */}
           {activeTab === 'inbox' && (
             <div className="flex-1 min-h-0 overflow-hidden pb-3">
-              <EmailWidget onCompose={(to) => setChatInput(`Draft an email to ${to}: `)} />
+              <EmailWidget />
             </div>
           )}
 
           {/* Calendar */}
           {activeTab === 'calendar' && (
             <div className="flex-1 min-h-0 overflow-hidden pb-3">
-              <CalendarWidget onAddEvent={() => setChatInput('Add a new event: ')} />
+              <CalendarWidget />
             </div>
           )}
 
@@ -183,13 +191,21 @@ export default function Home() {
             </div>
           )}
 
-          {/* Brief: morning brief + memory */}
+          {/* Brief: morning brief + memory + telegram */}
           {activeTab === 'brief' && (
             <div className="flex-1 overflow-y-auto min-h-0">
-              <div className="grid grid-cols-2 gap-3 pb-3" style={{ gridTemplateRows: '380px' }}>
-                <MorningBriefWidget onAsk={setChatInput} />
+              <div className="grid grid-cols-2 gap-3 pb-3" style={{ gridTemplateRows: '380px 300px' }}>
+                <MorningBriefWidget />
                 <SpideyMemoryWidget />
+                <TelegramSetupWidget />
               </div>
+            </div>
+          )}
+
+          {/* Vault: idea vault */}
+          {activeTab === 'vault' && (
+            <div className="flex-1 min-h-0 overflow-hidden pb-3">
+              <IdeaVaultWidget />
             </div>
           )}
 
@@ -210,6 +226,19 @@ export default function Home() {
           />
         </div>
       </main>
+
+      {/* Floating voice orb — toggle on/off */}
+      {jarvisOpen ? (
+        <VoiceOrb onClose={() => setJarvisOpen(false)} />
+      ) : (
+        <button
+          onClick={() => setJarvisOpen(true)}
+          title="Talk to Spidey"
+          className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-gold/15 border-2 border-gold/40 shadow-lg shadow-gold/20 flex items-center justify-center text-gold hover:bg-gold/25 hover:scale-110 active:scale-95 transition-all duration-200"
+        >
+          <Mic size={22} />
+        </button>
+      )}
     </div>
   )
 }

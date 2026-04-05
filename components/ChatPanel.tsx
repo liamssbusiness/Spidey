@@ -39,8 +39,8 @@ function PlanCard({
   disabled: boolean
 }) {
   return (
-    <div className="rounded-xl border border-spidey-blue/40 bg-spidey-blue/5 p-4 mt-2 mb-1 space-y-3">
-      <div className="text-[10px] font-semibold text-spidey-blue uppercase tracking-widest">
+    <div className="rounded-xl border border-gold/40 bg-gold/5 p-4 mt-2 mb-1 space-y-3">
+      <div className="text-[10px] font-semibold text-gold uppercase tracking-widest">
         Action Plan
       </div>
       <pre className="text-xs text-text whitespace-pre-wrap font-sans leading-relaxed">{plan}</pre>
@@ -330,17 +330,17 @@ export default function ChatPanel({
     <div className="glass rounded-xl flex flex-col h-full overflow-hidden">
       {/* Header */}
       <div className="flex items-center gap-2 px-4 py-3 border-b border-border shrink-0">
-        <span className="text-base">🕷️</span>
+        <span className="text-base">⚡</span>
         <span className="text-sm font-semibold text-text">Spidey</span>
         <span className="text-[10px] text-text-dim ml-1">Chief of Staff</span>
         {isListening && (
-          <span className="flex items-center gap-1 text-[10px] text-spidey-red ml-2 animate-pulse">
+          <span className="flex items-center gap-1 text-[10px] text-gold ml-2 animate-pulse">
             <Mic size={10} />
             Listening{voiceCountdown !== null ? ` · sending in ${voiceCountdown}s` : '...'}
           </span>
         )}
         {voiceEnabled && !isListening && (
-          <span className="flex items-center gap-1 text-[10px] text-spidey-red ml-auto">
+          <span className="flex items-center gap-1 text-[10px] text-gold ml-auto">
             <Volume2 size={10} />
             Voice On
           </span>
@@ -358,7 +358,7 @@ export default function ChatPanel({
               )}
             >
               {msg.role === 'assistant' && (
-                <span className="text-[10px] text-spidey-red font-semibold uppercase tracking-widest block mb-1.5">
+                <span className="text-[10px] text-gold font-semibold uppercase tracking-widest block mb-1.5">
                   Spidey
                 </span>
               )}
@@ -381,7 +381,7 @@ export default function ChatPanel({
         {streamingText && (
           <div className="flex justify-start">
             <div className="msg-spidey max-w-[82%] px-4 py-3 rounded-xl text-sm leading-relaxed text-text">
-              <span className="text-[10px] text-spidey-red font-semibold uppercase tracking-widest block mb-1.5">
+              <span className="text-[10px] text-gold font-semibold uppercase tracking-widest block mb-1.5">
                 Spidey
               </span>
               <p className="whitespace-pre-wrap typing-cursor">{streamingText}</p>
@@ -393,14 +393,14 @@ export default function ChatPanel({
         {loading && !streamingText && (
           <div className="flex justify-start">
             <div className="msg-spidey px-4 py-3 rounded-xl">
-              <span className="text-[10px] text-spidey-red font-semibold uppercase tracking-widest block mb-1.5">
+              <span className="text-[10px] text-gold font-semibold uppercase tracking-widest block mb-1.5">
                 Spidey
               </span>
               <div className="flex gap-1 items-center h-4">
                 {[0, 1, 2].map(i => (
                   <div
                     key={i}
-                    className="w-1.5 h-1.5 rounded-full bg-spidey-red opacity-70 animate-bounce"
+                    className="w-1.5 h-1.5 rounded-full bg-gold opacity-70 animate-bounce"
                     style={{ animationDelay: `${i * 0.15}s` }}
                   />
                 ))}
@@ -422,8 +422,8 @@ export default function ChatPanel({
             className={clsx(
               'shrink-0 w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200',
               isListening
-                ? 'bg-spidey-red text-white animate-pulse'
-                : 'bg-bg-surface3 text-text-dim hover:text-spidey-red hover:bg-spidey-red/10 disabled:cursor-not-allowed'
+                ? 'bg-gold text-white animate-pulse'
+                : 'bg-bg-surface3 text-text-dim hover:text-gold hover:bg-gold/10 disabled:cursor-not-allowed'
             )}
           >
             {isListening ? <MicOff size={13} /> : <Mic size={13} />}
@@ -446,7 +446,7 @@ export default function ChatPanel({
             className={clsx(
               'shrink-0 w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200',
               input.trim() && !loading
-                ? 'btn-red'
+                ? 'btn-gold'
                 : 'bg-bg-surface3 text-text-dim cursor-not-allowed'
             )}
           >

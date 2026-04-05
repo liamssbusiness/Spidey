@@ -505,12 +505,12 @@ export default function CivSimWidget() {
     <div className="glass rounded-xl flex flex-col overflow-hidden h-full">
       {/* Header */}
       <div className="flex items-center gap-2 px-3 py-2 border-b border-border shrink-0">
-        <div className="w-5 h-5 rounded-md bg-spidey-blue/10 flex items-center justify-center">
-          <Globe size={11} className="text-spidey-blue" />
+        <div className="w-5 h-5 rounded-md bg-gold/10 flex items-center justify-center">
+          <Globe size={11} className="text-gold" />
         </div>
         <span className="text-xs font-semibold text-text tracking-wide">Civilization</span>
         <div className="flex-1" />
-        <span className="text-[10px] font-mono text-spidey-blue">{yearLabel(displayYear)}</span>
+        <span className="text-[10px] font-mono text-gold">{yearLabel(displayYear)}</span>
         <span
           className="text-[10px] px-1.5 py-0.5 rounded font-semibold"
           style={{ background: era.color + '30', color: era.color }}
@@ -526,7 +526,7 @@ export default function CivSimWidget() {
         </button>
         <button
           onClick={cycleSpeed}
-          className="flex items-center gap-0.5 text-[10px] text-text-dim hover:text-spidey-blue transition-colors px-1.5 py-0.5 rounded"
+          className="flex items-center gap-0.5 text-[10px] text-text-dim hover:text-gold transition-colors px-1.5 py-0.5 rounded"
           title="Speed"
         >
           <FastForward size={10} />

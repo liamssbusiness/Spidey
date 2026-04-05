@@ -15,9 +15,9 @@ export default function TopNav({ user, voiceEnabled, onVoiceToggle }: TopNavProp
     <nav className="glass border-b border-border flex items-center px-4 h-14 gap-4 shrink-0 relative z-10">
       {/* Logo */}
       <div className="flex items-center gap-2 mr-4">
-        <span className="text-xl">🕷️</span>
+        <span className="text-xl">⚡</span>
         <span className="font-bold text-text tracking-tight text-lg">Spidey</span>
-        <span className="text-[10px] font-medium text-spidey-red uppercase tracking-widest ml-1 opacity-80">
+        <span className="text-[10px] font-medium text-gold uppercase tracking-widest ml-1 opacity-80">
           AI
         </span>
       </div>
@@ -27,7 +27,7 @@ export default function TopNav({ user, voiceEnabled, onVoiceToggle }: TopNavProp
 
       {/* Status indicator */}
       <div className="flex items-center gap-1.5">
-        <div className="w-1.5 h-1.5 rounded-full bg-spidey-red animate-pulse" />
+        <div className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
         <span className="text-xs text-text-muted">Online</span>
       </div>
 
@@ -39,7 +39,7 @@ export default function TopNav({ user, voiceEnabled, onVoiceToggle }: TopNavProp
         className={clsx(
           'flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 border',
           voiceEnabled
-            ? 'bg-spidey-red/10 border-spidey-red/40 text-spidey-red'
+            ? 'bg-gold/10 border-gold/40 text-gold'
             : 'bg-bg-surface2 border-border text-text-muted hover:border-border hover:text-text'
         )}
       >
@@ -59,7 +59,7 @@ export default function TopNav({ user, voiceEnabled, onVoiceToggle }: TopNavProp
             className="w-7 h-7 rounded-full border border-border"
           />
         ) : (
-          <div className="w-7 h-7 rounded-full bg-spidey-blue/20 border border-spidey-blue/30 flex items-center justify-center text-xs font-bold text-spidey-blue">
+          <div className="w-7 h-7 rounded-full bg-gold/20 border border-gold/30 flex items-center justify-center text-xs font-bold text-gold">
             {user.name?.[0] ?? 'L'}
           </div>
         )}

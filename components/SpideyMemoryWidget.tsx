@@ -81,7 +81,7 @@ export default function SpideyMemoryWidget() {
             </div>
             <button
               onClick={() => remove(item.id)}
-              className="shrink-0 opacity-0 group-hover:opacity-100 text-text-dim hover:text-spidey-red transition-all mt-0.5"
+              className="shrink-0 opacity-0 group-hover:opacity-100 text-text-dim hover:text-gold transition-all mt-0.5"
             >
               <Trash2 size={11} />
             </button>

@@ -91,7 +91,7 @@ export default function TasksWidget({ onAsk }: { onAsk?: (prompt: string) => voi
             <span className="flex-1 text-xs text-text leading-relaxed">{task.title}</span>
             <button
               onClick={() => mutate({ action: 'delete', id: task.id })}
-              className="shrink-0 opacity-0 group-hover:opacity-100 text-text-dim hover:text-spidey-red transition-all"
+              className="shrink-0 opacity-0 group-hover:opacity-100 text-text-dim hover:text-gold transition-all"
             >
               <Trash2 size={11} />
             </button>
@@ -118,7 +118,7 @@ export default function TasksWidget({ onAsk }: { onAsk?: (prompt: string) => voi
                 <span className="flex-1 text-xs text-text-dim line-through leading-relaxed">{task.title}</span>
                 <button
                   onClick={() => mutate({ action: 'delete', id: task.id })}
-                  className="shrink-0 opacity-0 group-hover:opacity-100 text-text-dim hover:text-spidey-red transition-all"
+                  className="shrink-0 opacity-0 group-hover:opacity-100 text-text-dim hover:text-gold transition-all"
                 >
                   <Trash2 size={11} />
                 </button>

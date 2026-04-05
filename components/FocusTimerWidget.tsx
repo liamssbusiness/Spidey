@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Timer, Play, Pause, RotateCcw } from 'lucide-react'
 
 const PRESETS = [
-  { label: '25 min', seconds: 25 * 60, color: 'text-spidey-red', ring: 'border-spidey-red' },
+  { label: '25 min', seconds: 25 * 60, color: 'text-gold', ring: 'border-gold' },
   { label: '15 min', seconds: 15 * 60, color: 'text-orange-400', ring: 'border-orange-400' },
   { label: '5 min', seconds: 5 * 60, color: 'text-green-400', ring: 'border-green-400' },
 ]
@@ -141,7 +141,7 @@ export default function FocusTimerWidget({ onAsk }: { onAsk?: (prompt: string) =
             className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
               running
                 ? 'bg-orange-500/20 border-2 border-orange-500/50 text-orange-400 hover:bg-orange-500/30'
-                : 'bg-spidey-red/20 border-2 border-spidey-red/50 text-spidey-red hover:bg-spidey-red/30 disabled:opacity-40'
+                : 'bg-gold/20 border-2 border-gold/50 text-gold hover:bg-gold/30 disabled:opacity-40'
             }`}
           >
             {running ? <Pause size={18} /> : <Play size={18} />}
@@ -151,7 +151,7 @@ export default function FocusTimerWidget({ onAsk }: { onAsk?: (prompt: string) =
         {done && onAsk && (
           <button
             onClick={() => onAsk("My focus session just finished. What should I work on next?")}
-            className="text-[10px] text-spidey-red hover:underline"
+            className="text-[10px] text-gold hover:underline"
           >
             Ask Spidey what&apos;s next
           </button>

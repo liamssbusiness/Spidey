@@ -1,6 +1,6 @@
 export async function textToSpeech(text: string): Promise<Buffer> {
   const apiKey = process.env.ELEVENLABS_API_KEY
-  const voiceId = process.env.ELEVENLABS_VOICE_ID ?? 'pNInz6obpgDQGcFmaJgB'
+  const voiceId = process.env.ELEVENLABS_VOICE_ID ?? 'onwK4e9ZLuTAKqWW03F9'
 
   if (!apiKey) throw new Error('ELEVENLABS_API_KEY not set')
 
@@ -12,11 +12,11 @@ export async function textToSpeech(text: string): Promise<Buffer> {
     },
     body: JSON.stringify({
       text,
-      model_id: 'eleven_monolingual_v1',
+      model_id: 'eleven_turbo_v2_5',
       voice_settings: {
-        stability: 0.4,
-        similarity_boost: 0.75,
-        style: 0.3,
+        stability: 0.6,
+        similarity_boost: 0.8,
+        style: 0.15,
         use_speaker_boost: true,
       },
     }),
