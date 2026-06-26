@@ -14,6 +14,18 @@ The dashboard surrounds the chat with live widgets: inbox, calendar, tasks, note
 
 ---
 
+## Architecture at a glance
+
+```mermaid
+flowchart TD
+    U["Dashboard + widgets"] -->|"/api/chat"| CLA["Claude tool-use loop"]
+    CLA --> EM["Gmail"]
+    CLA --> CAL["Google Calendar"]
+    CLA --> TN["Tasks · Notes"]
+    CLA --> MEM["Long-term memory"]
+    CLA -. "PLAN + approval" .-> W["Write actions"]
+```
+
 ## Features
 
 - **Claude tool-use loop** — the assistant calls real tools (`list_emails`, `send_email`, `list_events`, `create_calendar_event`, `add_task`, `read_notes`, `save_memory`, `get_morning_brief`, …) and reports results honestly, surfacing auth/tool errors instead of faking success
